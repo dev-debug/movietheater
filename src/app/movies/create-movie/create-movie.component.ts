@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { multipleSelectorModel } from 'src/app/utilities/multiple-selector/multiple-selector.model';
 import { MoviesService } from '../movies.service';
@@ -11,13 +12,12 @@ import { map } from 'rxjs/operators';
 })
 export class CreateMovieComponent implements OnInit {
 
-  constructor(private moviesService:MoviesService) { }
+  constructor(private moviesService:MoviesService,private router:Router) { }
 
 nonSelectedGenres: multipleSelectorModel[];
 nonSelectedMovieTheaters: multipleSelectorModel[];
 
   ngOnInit(): void {
-
 
   this.moviesService.postGet().subscribe(response=>{
     this.nonSelectedGenres=response.genres.map(genre=>{
@@ -29,14 +29,12 @@ nonSelectedMovieTheaters: multipleSelectorModel[];
       });
   });
 
-  // this.moviesService.postGet().subscribe(response=>{
-
-  // });
-
-
   }
 
-  saveChanges(event:Event): void{5
+  saveChanges(movieCreationDTO:movieCreationDTO): void{
+    this.moviesService.create(movieCreationDTO).subscribe((id:number)=>{
+      this.router.navigate(['/movie/' + id]);
+    });
   }
 
 }

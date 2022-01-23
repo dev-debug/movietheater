@@ -1,1 +1,12 @@
-<p>edit-movie works!</p>
+<h2>Edit Movie</h2>
+<app-form-movie
+[model]="model"
+*ngIf="model"
+[nonSelectedGenres]="nonSelectedGenres"
+[selectedGenres]="selectedGenres"
+[selectedMovieTheaters]="selectedMovieTheaters"
+[nonSelectedMovieTheaters]="nonSelectedMovieTheaters"
+[selectedActors]="selectedActors"
+onSaveChanges="saveChanges($event)"
+></app-form-movie>
+<mat-progress-spinner *ngIf="!model"></mat-progress-spinner>

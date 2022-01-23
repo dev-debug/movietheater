@@ -19,45 +19,45 @@ export class ActorsAutocompleteComponent implements OnInit {
   @ViewChild(MatTable) table: MatTable<any>;
 
   @Input()
- // selectedActors : []= [];
+
   selectedActors : actorsMovieDTO[] = [];
 
-  // actorsToDisplay:actorsMovieDTO[]=[];
-  columnsToDisplay!: ['picture', 'name', 'character', 'actions'];
+   actorsToDisplay:actorsMovieDTO[]=[];
+  columnsToDisplay= ['picture', 'name', 'character', 'actions'];
 
-  actorsToDisplay=[
-{name:'Tom Holland',picture:'https://moviesapis.blob.core.windows.net/actors/1d99e4df-dfa5-4dde-9b4b-2d197f5fb116.jpg',character:''},
-{name:'Chris Hemsworth',picture:'https://moviesapis.blob.core.windows.net/actors/1d99e4df-dfa5-4dde-9b4b-2d197f5fb116.jpg',character:''},
-{name:'Samuel L Jackson',picture:'https://moviesapis.blob.core.windows.net/actors/1d99e4df-dfa5-4dde-9b4b-2d197f5fb116.jpg',character:''},
-{name:'Tom Hanks',picture:'https://moviesapis.blob.core.windows.net/actors/1d99e4df-dfa5-4dde-9b4b-2d197f5fb116.jpg',character:''}
-];
+//   actorsToDisplay=[
+// {name:'Tom Holland',picture:'https://moviesapis.blob.core.windows.net/actors/1d99e4df-dfa5-4dde-9b4b-2d197f5fb116.jpg',character:''},
+// {name:'Chris Hemsworth',picture:'https://moviesapis.blob.core.windows.net/actors/1d99e4df-dfa5-4dde-9b4b-2d197f5fb116.jpg',character:''},
+// {name:'Samuel L Jackson',picture:'https://moviesapis.blob.core.windows.net/actors/1d99e4df-dfa5-4dde-9b4b-2d197f5fb116.jpg',character:''},
+// {name:'Tom Hanks',picture:'https://moviesapis.blob.core.windows.net/actors/1d99e4df-dfa5-4dde-9b4b-2d197f5fb116.jpg',character:''}
+// ];
 
 originalActors=this.actorsToDisplay;
 
 
-ngOnInit(): void {
-  this.control.valueChanges.subscribe(value=>{
-    this.actorsToDisplay=this.originalActors;
-    this.actorsToDisplay=this.actorsToDisplay.filter(actor=>actor.name.indexOf(value)!==-1)
-    });
-}
+// ngOnInit(): void {
+//   this.control.valueChanges.subscribe(value=>{
+//     this.actorsToDisplay=this.originalActors;
+//     this.actorsToDisplay=this.actorsToDisplay.filter(actor=>actor.name.indexOf(value)!==-1)
+//     });
+// }
 
-  // ngOnInit(): void {
-  //   this.control.valueChanges.subscribe(value=>{
-  //     if(typeof value==="string"){
-  //       this.actorService.searchByName(value).subscribe(actors =>{
-  //         this.actorsToDisplay=actors;
-  //       });
+  ngOnInit(): void {
+    this.control.valueChanges.subscribe(value=>{
+      if(typeof value==="string"){
+        this.actorService.searchByName(value).subscribe(actors =>{
+          this.actorsToDisplay=actors;
+        });
 
-  //     }
-  //     else{
-  //       this.actorService.searchByName(value.name).subscribe(actors =>{
-  //         this.actorsToDisplay=actors;
-  //       });
+      }
+      else{
+        this.actorService.searchByName(value.name).subscribe(actors =>{
+          this.actorsToDisplay=actors;
+        });
 
-  //     }
-  //     });
-  // }
+      }
+      });
+  }
 
   optionSelected(event:MatAutocompleteSelectedEvent): void{
     console.log(event.option.value);
@@ -78,7 +78,7 @@ ngOnInit(): void {
     this.table.renderRows();
     }
 
-    dropped(event: CdkDragDrop<any>) {
+    dropped(event: CdkDragDrop<any[]>) {
       const previousIndex = this.selectedActors.findIndex(actor=>actor===event.item.data);
       moveItemInArray(this.selectedActors,previousIndex,event.currentIndex);
       this.table.renderRows();

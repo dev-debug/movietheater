@@ -15,6 +15,6 @@ export class CreateMovieTheaterComponent implements OnInit {
   ngOnInit(): void {
   }
   saveChanges(movieTheater:movieTheatersCreationDTO){
-this.movieTheatersService.create(movieTheater).subscribe(()=>this.router.navigate(['/movieTheaters']));
+this.movieTheatersService.create(movieTheater).subscribe(()=>this.router.navigate(['/movietheaters']));
   }
 }

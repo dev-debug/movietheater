@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import {HttpClientModule} from '@angular/common/http'
+import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http'
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -9,11 +9,56 @@ import { GenericListComponent } from './utilities/generic-list/generic-list.comp
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 // import {LeafletModule} from '@asymmetrik/ngx-leaflet'
-import {LeafletModule} from '@asymmetrik/ngx-leaflet'
+import {LeafletModule} from '@asymmetrik/ngx-leaflet';
 // import 'leaflet/dist/images/marker-shadow.png';
+
+////////////////////
+
+import { icon, Marker } from 'leaflet';
+const iconRetinaUrl = 'src/assets/marker-icon-2x.png';
+const iconUrl = 'src/assets/marker-icon.png';
+const shadowUrl = 'src/assets/marker-shadow.png';
+const iconDefault = icon({
+  iconRetinaUrl,
+  iconUrl,
+  shadowUrl,
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  tooltipAnchor: [16, -28],
+  shadowSize: [41, 41]
+});
+Marker.prototype.options.icon = iconDefault;
+
+
+//////////////////////////
+
+// import * as L from 'leaflet'
+// import 'leaflet/dist/leaflet.css';
+
+// // stupid hack so that leaflet's images work after going through webpack
+// import marker from 'leaflet/dist/images/marker-icon.png';
+// import marker2x from 'leaflet/dist/images/marker-icon-2x.png';
+// import markerShadow from 'leaflet/dist/images/marker-shadow.png';
+
+// // delete L.Icon.Default.prototype._getIconUrl;
+
+// L.Icon.Default.mergeOptions({
+//     iconRetinaUrl: marker2x,
+//     iconUrl: marker,
+//     shadowUrl: markerShadow
+// });
+
+
+
+
+
+///////
+//  import 'leaflet/dist/images/marker-shadow.png';
 ////////////////////////////////
 //  import img from '.'
 //import { Map, latLng, tileLayer, Layer, marker, icon } from '@asymmetrik/ngx-leaflet';
+// import 'leaflet/dist/images/marker-shadow.png';
 
 ///////////////////////////
 import {MarkdownModule} from 'ngx-markdown';
@@ -46,6 +91,13 @@ import { MultipleSelectorComponent } from './utilities/multiple-selector/multipl
 import { ActorsAutocompleteComponent } from './actors/actors-autocomplete/actors-autocomplete.component';
 import { DisplayErrorsComponent } from './utilities/display-errors/display-errors.component';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
+import { MovieDetailsComponent } from './movies/movie-details/movie-details.component';
+import { AuthorizeViewComponent } from './security/authorize-view/authorize-view.component';
+import { LoginComponent } from './security/login/login.component';
+import { RegisterComponent } from './security/register/register.component';
+import { AuthenticationFormComponent } from './security/authentication-form/authentication-form.component';
+import { JwtInterceptorService } from './security/jwt-interceptor.service';
+import { UserIndexComponent } from './security/user-index/user-index.component';
 //import { ActorsComponent } from './actors/actors/actors.component';
 @NgModule({
   declarations: [
@@ -78,6 +130,13 @@ import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
     MultipleSelectorComponent,
     ActorsAutocompleteComponent,
     DisplayErrorsComponent,
+    MovieDetailsComponent,
+    AuthorizeViewComponent,
+    LoginComponent,
+    RegisterComponent,
+
+    AuthenticationFormComponent,
+     UserIndexComponent,
 
   ],
   imports: [
@@ -93,7 +152,11 @@ import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
     LeafletModule,
     SweetAlert2Module.forRoot()
   ],
-  providers: [],
+  providers: [{
+    provide:HTTP_INTERCEPTORS,
+    useClass:JwtInterceptorService,
+    multi:true
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

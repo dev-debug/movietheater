@@ -1,4 +1,7 @@
-          import { Component, NgModule } from '@angular/core';
+import { RegisterComponent } from './security/register/register.component';
+import { UserIndexComponent } from './security/user-index/user-index.component';
+import { MovieDetailsComponent } from './movies/movie-details/movie-details.component';
+          import { NgModule } from '@angular/core';
           import { RouterModule, Routes } from '@angular/router';
           import { CreateActorComponent } from './actors/create-actor/create-actor.component';
           import { EditActorComponent } from './actors/edit-actor/edit-actor.component';
@@ -12,24 +15,31 @@
           import { IndexMovieTheaterComponent } from './movie-theaters/index-movie-theater/index-movie-theater.component';
           import { CreateMovieComponent } from './movies/create-movie/create-movie.component';
           import { EditMovieComponent } from './movies/edit-movie/edit-movie.component';
-import { MovieFilterComponent } from './movies/movie-filter/movie-filter.component';
+          import { MovieFilterComponent } from './movies/movie-filter/movie-filter.component';
+          import { IsAdminGuard } from './is-admin.guard';
+          import { LoginComponent } from './security/login/login.component';
 
           const routes: Routes = [
-            {path:' ', component:HomeComponent},
-            {path:'genres', component:IndexGenresComponent},
-            {path:'genres/create', component:CreateGenreComponent},
-            {path:'genres/edit/:id', component:EditGenreComponent},
-            {path:'actors', component:IndexActorsComponent},
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
-            {path:'actors/create', component:CreateActorComponent},
-            {path:'actors/edit/:id', component:EditActorComponent},
-            {path:'movietheaters', component:IndexMovieTheaterComponent},
-            {path:'movietheaters/create', component:CreateMovieTheaterComponent},
-            {path:'movietheaters/edit/:id', component:EditMovieTheaterComponent},
+            {path:'', component:HomeComponent},
+            {path:'genres', component:IndexGenresComponent, canActivate:[IsAdminGuard]},
+            {path:'genres/create', component:CreateGenreComponent, canActivate:[IsAdminGuard]},
+            {path:'genres/edit/:id', component:EditGenreComponent, canActivate:[IsAdminGuard]},
+            {path:'actors', component:IndexActorsComponent, canActivate:[IsAdminGuard]},
 
-            {path:'movies/create', component:CreateMovieComponent},
-            {path:'movies/edit/:id', component:EditMovieComponent},
+            {path:'actors/create', component:CreateActorComponent, canActivate:[IsAdminGuard]},
+            {path:'actors/edit/:id', component:EditActorComponent, canActivate:[IsAdminGuard]},
+            {path:'movietheaters', component:IndexMovieTheaterComponent, canActivate:[IsAdminGuard]},
+            {path:'movietheaters/create', component:CreateMovieTheaterComponent, canActivate:[IsAdminGuard]},
+            {path:'movietheaters/edit/:id', component:EditMovieTheaterComponent, canActivate:[IsAdminGuard]},
+
+            {path:'movies/create', component:CreateMovieComponent, canActivate:[IsAdminGuard]},
+            {path:'movies/edit/:id', component:EditMovieComponent, canActivate:[IsAdminGuard]},
             {path:'movies/filter', component:MovieFilterComponent},
+            {path: 'movies/id', component:MovieDetailsComponent},
+            {path: 'register', component:RegisterComponent},
+            {path: 'login', component:LoginComponent},
+            {path:'users',component:UserIndexComponent,canActivate:[IsAdminGuard]},
+
             // {path:'**',component:HomeComponent}
             {path:'**',redirectTo:' '}
 
@@ -37,7 +47,9 @@ import { MovieFilterComponent } from './movies/movie-filter/movie-filter.compone
           ];
 
           @NgModule({
-            imports: [RouterModule.forRoot(routes)],
+            imports: [RouterModule.forRoot(routes,
+              { enableTracing: true } // <-- debugging purposes only
+              )],
             exports: [RouterModule]
           })
           export class AppRoutingModule { }

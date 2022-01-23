@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { SecurityService } from './security/security.service';
 
 @Component({
   selector: 'app-root',
@@ -6,44 +8,27 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
+  constructor(
+    private securityService: SecurityService,
+    private router: Router,
+    private activatedRoute: ActivatedRoute
+  ) {}
+
 ngOnInit(): void {
-  // this.moviesFutureReleases= [{
-//   title:"Bat Man",
-//   releaseDate:new Date("07-24-2011"),
-//   price: 199.99
-// },
-// {
-//   title:"Flash",
-//   releaseDate:new Date("03-15-2009"),
-//   price: 99.99
-// },
-// {
-//   title:"SuperMan",
-//   releaseDate:new Date("04-27-2001"),
-//   price: 99.99
-// },
-// {
-//   title:"Thor",
-//   releaseDate:new Date("07-25-2019"),
-//   price: 199.99
-// }
-// ];
 
 }
 
+shouldRedirectToUser(): boolean{
+  if (this.securityService.isAuthenticated()){
+    return true;
+  }
 
-title="Hi Susana";
+  console.log(this.router.url);
+  console.log(this.activatedRoute.url);
 
-display=true;
-// // duplicateNumber(n: number)
-// // {
-// //  return n*2;
-// // }
-// handleRating(rate:number): void{
-//   alert(`The user selected {$rate}`)
-//}
+  return false;
+}
 
-// getValue(event: Event): string {
-//   return (event.target as HTMLInputElement).value;
-// }
+
+
 }
